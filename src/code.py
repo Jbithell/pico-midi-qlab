@@ -11,11 +11,11 @@ from adafruit_midi.note_off         import NoteOff
 # Config 
 buttons_pins = [board.GP6, board.GP8]
 leds_pins = [board.GP7, board.GP9]
-midi_notes = [60, 61]
+midi_notes = [3, 4]
 
-#  MIDI setup as MIDI out device
+
+
 midi = adafruit_midi.MIDI(midi_out=usb_midi.ports[1], out_channel=0)
-
 buttons = []
 button_states = []
 leds = []
@@ -35,13 +35,11 @@ while True:
     for i in range(len(buttons)):
         button = buttons[i]
         led = leds[i]
-        #  if button is pressed...
         if button.value and button_states[i] is True:
-            midi.send(NoteOn(midi_notes[i], 120))
+            midi.send(NoteOn(midi_notes[i], 127))
             led.value = False
             button_states[i] = False
-        #  if the button is released...
         if not button.value and button_states[i] is False:
-            midi.send(NoteOff(midi_notes[i], 120))
+            midi.send(NoteOff(midi_notes[i], 127))
             led.value = True
             button_states[i] = True
